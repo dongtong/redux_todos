@@ -1,6 +1,10 @@
 import React, { Component } from  'react';
+//绑定redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchTodos } from '../actions/index';
 
-export default class SearchBarContainer extends Component {
+class SearchBarContainer extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {query: ''};
@@ -14,7 +18,8 @@ export default class SearchBarContainer extends Component {
 
 	onFormSubmit(event) {
 		event.preventDefault();
-		console.log(this.refs.city.value);
+		this.props.fetchTodos();
+		this.setState({query: ''});
 	}
 
 	render() {
@@ -34,3 +39,10 @@ export default class SearchBarContainer extends Component {
 		);
 	}
 }
+
+function mapDispatchToProps (dispatch) {
+	return bindActionCreators( { fetchTodos }, dispatch);
+}
+
+//null是传递state,这里不需要
+export default connect(null, mapDispatchToProps)(SearchBarContainer);
